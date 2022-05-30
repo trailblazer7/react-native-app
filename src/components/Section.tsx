@@ -5,7 +5,6 @@ const Section: React.FC<{
     sectionStyles?: Object
   }> = ({ children, sectionStyles }) => {
   
-    const isDarkMode = useColorScheme() === 'dark';
 
     return (
       <View style={{
