@@ -3,17 +3,16 @@ import React from 'react'
 import { COLORS, SIZES } from '../constants'
 import Header from '../components/Header'
 import Article from '../components/Article'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { add, remove } from '../store/features/articlesSlice'
 
 type Props = {}
 
 const Home = (props: Props) => {
 
-
-    const dummy = [
-        {id: '1', title: 'First Article', description: 'first description'},
-        {id: '2', title: 'Second Article', description: 'second description'},
-        {id: '3', title: 'Theard Article', description: 'theard description'}
-    ]
+    const articles = useAppSelector( state => state.articles.articles );
+    const dispatch = useAppDispatch();
 
     return (
         
@@ -25,10 +24,28 @@ const Home = (props: Props) => {
                 
                 <View style={{zIndex: 0}}>
 
+                    <View style={{
+                        flexDirection: 'row',
+                        paddingTop: SIZES.small
+                    }}>
+                        <TouchableOpacity onPress={() => dispatch(add())} style={{ 
+                            backgroundColor: COLORS.white,
+                            padding: SIZES.base
+                        }}>
+                            <Text>Add</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => dispatch( remove('1') )} style={{ 
+                            backgroundColor: COLORS.white,
+                            padding: SIZES.base,
+                            marginLeft: 5
+                        }}>
+                            <Text>Remove</Text>
+                        </TouchableOpacity>
+                    </View>
                     
                     <FlatList 
                         style={styles.container}
-                        data={dummy}
+                        data={articles}
                         renderItem={({ item }) => <Article data={item} />}
                         keyExtractor={item => item.id}
                         ListHeaderComponent={<Header  showTags={true} />}
