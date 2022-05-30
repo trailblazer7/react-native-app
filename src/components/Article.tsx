@@ -3,12 +3,10 @@ import React from 'react'
 import { COLORS, IMAGES, SHADOWS, SIZES } from '../constants'
 import ImgButton from './ImgButton'
 import Tag from './Tag'
+import { ArticleInterface } from '../store/articles/articlesSlice'
 
 type Props = {
-    data: {
-        title: string,
-        description: string
-    }
+    data: ArticleInterface
 }
 
 const Article = (props: Props) => {
@@ -35,13 +33,13 @@ const Article = (props: Props) => {
         }}>
           <Text style={{
             fontWeight: 'bold'
-          }}>Username</Text>
+          }}>{props.data.author.username}</Text>
           <Text style={{
             color: COLORS.white
-          }}>Wed Nov 24 2021</Text>
+          }}>{props.data.createdAt}</Text>
         </View>
         
-        <ImgButton handlePress={() => {}}/>
+        <ImgButton handlePress={() => {}} count={props.data.favoritesCount}/>
 
         <TouchableOpacity style={{
           padding: 10

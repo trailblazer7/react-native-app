@@ -1,18 +1,23 @@
 import { View, SafeAreaView, StatusBar, StyleSheet, Text, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { COLORS, SIZES } from '../constants'
 import Header from '../components/Header'
 import Article from '../components/Article'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import { add, remove } from '../store/features/articlesSlice'
+import { add, remove } from '../store/articles/articlesSlice'
+import { fetchArticles } from '../store/articles/fetchArticles'
 
 type Props = {}
 
 const Home = (props: Props) => {
 
-    const articles = useAppSelector( state => state.articles.articles );
+    const list = useAppSelector( state => state.articles );
     const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(fetchArticles())
+    }, [])
 
     return (
         
@@ -21,35 +26,17 @@ const Home = (props: Props) => {
             <StatusBar animated={true} />
 
             <View style={{flex: 1}}>
-                
                 <View style={{zIndex: 0}}>
-
-                    <View style={{
-                        flexDirection: 'row',
-                        paddingTop: SIZES.small
-                    }}>
-                        <TouchableOpacity onPress={() => dispatch(add())} style={{ 
-                            backgroundColor: COLORS.white,
-                            padding: SIZES.base
-                        }}>
-                            <Text>Add</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => dispatch( remove('1') )} style={{ 
-                            backgroundColor: COLORS.white,
-                            padding: SIZES.base,
-                            marginLeft: 5
-                        }}>
-                            <Text>Remove</Text>
-                        </TouchableOpacity>
-                    </View>
-                    
-                    <FlatList 
-                        style={styles.container}
-                        data={articles}
-                        renderItem={({ item }) => <Article data={item} />}
-                        keyExtractor={item => item.id}
-                        ListHeaderComponent={<Header  showTags={true} />}
-                    />
+                    { 
+                        list.loading 
+                        ? <Text style={styles.loading}>Loading...</Text>
+                        : <FlatList 
+                            data={list.articles}
+                            renderItem={({ item }) => <Article data={item} key={item.slug}/>}
+                            keyExtractor={item => item.slug}
+                            ListHeaderComponent={<Header  showTags={true} />}
+                        />
+                    }
                 </View>
                 
                 <View style={styles.fixedContainer}>
@@ -64,7 +51,12 @@ const Home = (props: Props) => {
 export default Home
 
 const styles = StyleSheet.create({
-    container: {},
+    loading: {
+        padding: SIZES.extraLarge,
+        textAlign: 'center',
+        color: COLORS.white,
+        fontSize: SIZES.extraLarge
+    },
     
     fixedContainer: {
         position: 'absolute',
