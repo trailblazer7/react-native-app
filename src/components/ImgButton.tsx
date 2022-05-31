@@ -3,14 +3,15 @@ import React from 'react'
 import { COLORS, SIZES, SHADOWS, IMAGES } from '../constants'
 
 type Props = {
-    handlePress: () => void
+    handlePress: () => void,
+    count: number
 }
 
 const ImgButton = (props: Props) => {
   return (
     <TouchableOpacity 
         style={{
-            width: 40,
+            width: 80,
             height: 40,
             top: 10,
             right: 10,
@@ -18,7 +19,10 @@ const ImgButton = (props: Props) => {
             position: 'absolute',
             borderRadius: SIZES.extraLarge,
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+            paddingRight: SIZES.font,
+            paddingLeft: SIZES.base,
 
             ...SHADOWS.light
         }}
@@ -32,6 +36,7 @@ const ImgButton = (props: Props) => {
                 height: 24
             }}
         />
+        <Text style={{color: COLORS.gray}}>{props.count}</Text>
     </TouchableOpacity>
   )
 }

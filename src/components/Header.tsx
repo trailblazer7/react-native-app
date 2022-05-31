@@ -48,7 +48,7 @@ const Header = (props: Props) => {
                     flexDirection: 'row',
                     flexWrap: 'wrap'
                 }}>
-                    {['welcome', 'implementations', 'introduction', 'codebaseShow'].map(tag => <Tag title={tag} />)}
+                    {['welcome', 'implementations', 'introduction', 'codebaseShow'].map((tag, index) => <Tag title={tag} key={index} />)}
                 </View>
 
             </View>}
