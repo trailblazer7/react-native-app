@@ -1,19 +1,31 @@
 import { View, SafeAreaView, StatusBar, StyleSheet, TextInput } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { COLORS, SIZES } from '../constants'
 import Header from '../components/Header'
 import Button from '../components/Button'
 import SubHeader from '../components/SubHeader'
 import { useNavigation } from '@react-navigation/native'
+import { registerUser } from '../store/user/registerUser'
+import { useAppDispatch, useAppSelector } from '../store/hooks'
 
 type Props = {}
 
 const SignUp = (props: Props) => {
 
+  const [username, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+
   const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+  const registeredData = useAppSelector( state => state.users );
 
   const onSignUp = () => {
-    console.log('Sign Up!');
+    dispatch(registerUser({
+      username,
+      password,
+      email
+    }))
   }
 
   const onHaveAccountPress = () => {
@@ -41,19 +53,22 @@ const SignUp = (props: Props) => {
             <TextInput 
               style={styles.input}
               placeholder='Username'
-              onChangeText={() => {}}
+              onChangeText={setUserName}
+              value={username}
             />
             <TextInput 
               style={styles.input}
               placeholder='Email'
-              onChangeText={() => {}}
+              onChangeText={setEmail}
+              value={email}
             />
             <TextInput 
               style={styles.input}
               placeholder='Password'
-              onChangeText={() => {}}
+              onChangeText={setPassword}
+              value={password}
             />
-            <Button text='Sign In' onPress={onSignUp}/>
+            <Button text={`${registeredData.loading ? 'Registration...' : 'Sign In'}`} onPress={onSignUp}/>
           </View>
         </View>
     </SafeAreaView>

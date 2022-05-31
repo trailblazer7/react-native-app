@@ -61,10 +61,10 @@ const Article = (props: Props) => {
             <Text>Read more...</Text>
         </TouchableOpacity>
 
-        <Tag title='introduction'/>
+        <View style={{ justifyContent: 'flex-end', flexDirection: 'row' }}>
+          {props.data.tagList.map( tag => <Tag title={tag}/> )}
+        </View>
       </View>
-
-
     </View>
   )
 }
