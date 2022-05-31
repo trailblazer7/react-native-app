@@ -53,18 +53,17 @@ const articlesSlice = createSlice({
         })
 
         builder.addCase(fetchArticles.fulfilled, (state, { payload }) => {
-            
             state.loading = false
             state.articles = state.articles.concat(payload.articles)
         })
 
         builder.addCase(fetchArticles.rejected, (state, {payload}) => {
-
             state.loading = false
             console.log('Error on fetch articles: ', payload)
         })
     }
 })
+
 
 export const { add, remove } = articlesSlice.actions 
 

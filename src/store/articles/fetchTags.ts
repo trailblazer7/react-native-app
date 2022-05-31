@@ -2,11 +2,11 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { API_ROOT } from "../../constants";
 
 
-export const fetchArticles = createAsyncThunk(
-    'articles/fetch',
+export const fetchTags = createAsyncThunk(
+    'tags/fetch',
     async () => {
         const response = await fetch(
-            `${API_ROOT}/articles`
+            `${API_ROOT}/tags`
         )
 
         const data = await response.json()
