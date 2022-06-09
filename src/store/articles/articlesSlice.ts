@@ -28,7 +28,7 @@ const articlesSlice = createSlice({
     name: 'articles',
 
     initialState: {
-        articles: [] as ArticleInterface[],
+        list: [] as ArticleInterface[],
         loading: false
     },
 
@@ -54,7 +54,7 @@ const articlesSlice = createSlice({
 
         builder.addCase(fetchArticles.fulfilled, (state, { payload }) => {
             state.loading = false
-            state.articles = state.articles.concat(payload.articles)
+            state.list = state.list.concat(payload.articles)
         })
 
         builder.addCase(fetchArticles.rejected, (state, {payload}) => {

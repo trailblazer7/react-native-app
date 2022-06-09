@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import articlesReducer from './articles/articlesSlice'
-import registerUserReducer from './user/registerUserSlice'
+import commonSlice from './common/commonSlice'
 
 
 export const store = configureStore({
     reducer: {
         articles: articlesReducer,
-        users: registerUserReducer
+        common: commonSlice
     }
 })
 

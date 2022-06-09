@@ -62,7 +62,7 @@ const Article = (props: Props) => {
         </TouchableOpacity>
 
         <View style={{ justifyContent: 'flex-end', flexDirection: 'row' }}>
-          {props.data.tagList.map( tag => <Tag title={tag}/> )}
+          {props.data.tagList.map( (tag, index) => <Tag title={tag} key={index} /> )}
         </View>
       </View>
     </View>

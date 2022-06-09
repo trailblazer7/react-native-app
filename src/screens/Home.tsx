@@ -4,20 +4,34 @@ import { COLORS, SIZES } from '../constants'
 import Header from '../components/Header'
 import Article from '../components/Article'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { add, remove } from '../store/articles/articlesSlice'
 import { fetchArticles } from '../store/articles/fetchArticles'
+import { appLoad } from '../store/common/commonSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-type Props = {}
 
-const Home = (props: Props) => {
+const Home = () => {
 
-    const list = useAppSelector( state => state.articles );
+    const { articles } = useAppSelector( state => state );
     const dispatch = useAppDispatch();
 
+    // On Mount
     useEffect(() => {
+
+        // Check user token
+        (async () => {
+            try {
+                const _token = await AsyncStorage.getItem('jwt')
+                dispatch(appLoad({
+                    token: _token ? _token : null
+                }))
+            } catch (error) {
+                
+            }
+        })()
+        
         dispatch(fetchArticles())
     }, [])
+
 
     return (
         
@@ -28,10 +42,10 @@ const Home = (props: Props) => {
             <View style={{flex: 1}}>
                 <View style={{zIndex: 0}}>
                     { 
-                        list.loading 
+                        articles.loading 
                         ? <Text style={styles.loading}>Loading...</Text>
                         : <FlatList 
-                            data={list.articles}
+                            data={articles.list}
                             renderItem={({ item }) => <Article data={item} key={item.slug}/>}
                             keyExtractor={item => item.slug}
                             ListHeaderComponent={<Header  showTags={true} />}

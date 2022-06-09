@@ -5,7 +5,7 @@ import Header from '../components/Header'
 import Button from '../components/Button'
 import SubHeader from '../components/SubHeader'
 import { useNavigation } from '@react-navigation/native'
-import { registerUser } from '../store/user/registerUser'
+import { registerUser } from '../store/common/loginUser'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 
 type Props = {}
@@ -18,7 +18,7 @@ const SignUp = (props: Props) => {
 
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const registeredData = useAppSelector( state => state.users );
+  const loading = useAppSelector( state => state.common.loading );
 
   const onSignUp = () => {
     dispatch(registerUser({
@@ -68,7 +68,7 @@ const SignUp = (props: Props) => {
               onChangeText={setPassword}
               value={password}
             />
-            <Button text={`${registeredData.loading ? 'Registration...' : 'Sign In'}`} onPress={onSignUp}/>
+            <Button text={`${loading === 'loading' ? 'Registration...' : 'Sign In'}`} onPress={onSignUp}/>
           </View>
         </View>
     </SafeAreaView>

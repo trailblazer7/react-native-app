@@ -4,18 +4,63 @@ import { COLORS, SIZES } from '../constants'
 import Logo from './Logo'
 import { useNavigation } from '@react-navigation/native'
 import Tag from './Tag'
+import { useAppSelector } from '../store/hooks'
+import { UserType } from '../store/common/loginUser'
 
 
-type Props = {
+type HeaderPropsType = {
     showTags: boolean
 }
 
-const Header = (props: Props) => {
+type LogViewPropsType = {
+    user: UserType,
+    navigation: any
+}
 
+const LoggedOutView = (props: LogViewPropsType) => {
+
+    const {user, navigation} = props
+
+    if (!user) {
+        return (
+            <View style={{
+                flexDirection: 'row'
+            }}>
+                <Text style={styles.menuItem} onPress={() => navigation.navigate("Home" as never)}>Home</Text>
+                <Text style={styles.menuItem} onPress={() => navigation.navigate("SignIn" as never)}>Sign In</Text>
+                <Text style={styles.menuItem} onPress={() => navigation.navigate("SignUp" as never)}>Sign Up</Text>
+            </View>
+        )
+    }
+    return null
+}
+
+const LoggedInView = (props: LogViewPropsType) => {
+
+    const {user, navigation} = props
+
+    if (user) {
+        return (
+            <View style={{
+                flexDirection: 'row'
+            }}>
+                <Text style={styles.menuItem} onPress={() => navigation.navigate("Home" as never)}>Home</Text>
+                <Text style={styles.menuItem} onPress={() => navigation.navigate("Settings" as never)}>Settings</Text>
+                <Text style={styles.menuItem}>New Post</Text>
+            </View>
+        )
+    }
+    return null
+}
+
+
+
+const Header = (props: HeaderPropsType) => {
 
     const navigation = useNavigation();
-
     const currentRouteName:string = navigation.getState().routes[navigation.getState().index].name;
+
+    const currentUser = useAppSelector(state => state.common.currentUser)
 
     return (
         <View>
@@ -26,18 +71,13 @@ const Header = (props: Props) => {
                 
                 <Logo />
                 
-                <View style={{
-                    flexDirection: 'row'
-                }}>
-                    <Text style={styles.menuItem} onPress={() => navigation.navigate("Home" as never)}>Home</Text>
-                    <Text style={styles.menuItem} onPress={() => navigation.navigate("SignIn" as never)}>Sign In</Text>
-                    <Text style={styles.menuItem} onPress={() => navigation.navigate("SignUp" as never)}>Sign Up</Text>
-                </View>
+                <LoggedInView user={currentUser} navigation={navigation} />
+                <LoggedOutView user={currentUser} navigation={navigation} />
             </View>
+
             { props.showTags && <View style={{
                 padding: SIZES.base
             }}>
-
                 <Text style={{
                     color: COLORS.white,
                     textDecorationLine: 'underline',
